@@ -1,0 +1,21 @@
+<h1>{{ project.title }}</h1>
+<a href="{% url 'edit_project' project.pk %}">Edit Project</a>
+<a href="{% url 'export_gist' project.pk %}">Export as Gist</a>
+<h2>Todos</h2>
+<ul>
+    {% for todo in todos %}
+    <li>
+        {{ todo.description }} - {{ todo.status|yesno:"Complete,Pending" }} - <a href="{% url 'edit_todo' project.pk todo.pk %}">Edit</a>
+        <form method="post" action="{% url 'delete_todo' project.pk todo.pk %}">
+            {% csrf_token %}
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+<h3>Add Todo</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
